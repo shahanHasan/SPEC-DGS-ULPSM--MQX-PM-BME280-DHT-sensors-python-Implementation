@@ -1,0 +1,63 @@
+vcgencmd get_throttled returns 0xd0000 and 0x50000
+
+Hex    5     0     0     0     0
+Binary 0101  0000  0000  0000  0000
+Bit#   1111  1111  1100  0000  0000         
+       9876  5432  1098  7654  3210             
+          ^ -- Bit 16 is on - Been under voltage (at least once)
+        ^ ----- Bit 18 is on - Been throttled (at least once)
+(Note: since bits 0-3 are zero, the Pi is not currently UV or throttled).
+
+Hex    D     0     0     0     0
+Binary 1101  0000  0000  0000  0000 
+Bit#   1111  1111  1100  0000  0000         
+       9876   5432 1098  7654  3210             
+          ^ -- Bit 16 is on - Been under voltage (at least once)
+        ^ -----  Bit 18 is on - Been throttled (at least once)
+       ^ -------- Bit 19 is on - Soft temperature limit has occurred (at lest once)
+Note: since bits 0-3 are zero, the Pi is not currently UV or throttled).
+
+Bit	Hex value	Meaning
+0	0x1	Under-voltage detected
+1	0x2	Arm frequency capped
+2	0x4	Currently throttled
+3	0x8	Soft temperature limit active
+16	0x10000	Under-voltage has occurred
+17	0x20000	Arm frequency capping has occurred
+18	0x40000	Throttling has occurred
+19	0x80000	Soft temperature limit has occurred
+
+vcgencmd measure_temp
+
+Returns the temperature of the SoC as measured by the on-board temperature sensor.
+
+vcgencmd measure_clock [clock]
+
+This returns the current frequency of the specified clock. The options are:
+
+clock	Description
+arm	ARM core(s)
+core	GPU core
+H264	H.264 block
+isp	Image Sensor Pipeline
+v3d	3D block
+uart	UART
+pwm	PWM block (analogue audio output)
+emmc	SD card interface
+pixel	Pixel valves
+vec	Analogue video encoder
+hdmi	HDMI
+dpi	Display Parallel Interface
+
+e.g. vcgencmd measure_clock arm
+
+
+vcgencmd measure_volts [block]
+
+Displays the current voltages used by the specific block.
+
+block	Description
+core	VC4 core voltage
+sdram_c	SDRAM Core Voltage
+sdram_i	SDRAM I/O voltage
+sdram_p	SDRAM Phy Voltage
